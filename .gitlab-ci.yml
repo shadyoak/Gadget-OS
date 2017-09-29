@@ -27,7 +27,7 @@ variables:
 build:
   image: ntc-registry.githost.io/nextthingco/buildroot-development-container:testing
   stage: build
-  tags: [qemu-arm]
+  tags: [aws-auto-runner]
   script:
     - mkdir ${SSH_KEY_DIR}/
     - ssh-keyscan ntc.githost.io > ${SSH_KEY_DIR}/known_hosts
@@ -60,7 +60,7 @@ build:
 howitzer:
   image: ntc-registry.githost.io/gadget/howitzer-container:master
   stage: howitzer
-  tags: [qemu-arm]
+  tags: [aws-auto-runner]
   dependencies:
     - build
   script:
@@ -76,7 +76,7 @@ howitzer:
 upload:
   image: ntc-registry.githost.io/nextthingco/ci-tools:unstable
   stage: upload
-  tags: [qemu-arm]
+  tags: [aws-auto-runner]
   dependencies:
     - build
     - howitzer
@@ -95,7 +95,7 @@ upload:
 
 artifact_image:
   stage: artifact_image
-  tags: [qemu-arm]
+  tags: [aws-auto-runner]
   script:
     - apk update && apk add git coreutils bash
     - docker login -u ${BUILDER_UN} -p ${BUILDER_PW}
