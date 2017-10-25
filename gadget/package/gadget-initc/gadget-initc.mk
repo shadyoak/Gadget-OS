@@ -1,3 +1,4 @@
+
 ################################################################################
 #
 # gadget-initc
@@ -16,6 +17,12 @@ GADGET_INITC_MAKE_ENV = $(HOST_GO_TARGET_ENV) \
 	GOPATH="$(GADGET_INITC_GOPATH)"\
 	$(TARGET_MAKE_ENV)
 
+ifeq ($(BR2_arm),y)
+GADGET_INITC_ARTIFACT_DIR=$(@D)/build/linux_arm/gadgetosinit
+else ifeq ($(BR2_aarch64),y)
+GADGET_INITC_ARTIFACT_DIR=$(@D)/build/linux_arm64/gadgetosinit
+endif
+
 define GADGET_INITC_BUILD_CMDS
         $(MAKE) clean
         $(GADGET_INITC_MAKE_ENV) $(MAKE) -C $(@D) get
@@ -23,12 +30,7 @@ define GADGET_INITC_BUILD_CMDS
 endef
 
 define GADGET_INITC_INSTALL_TARGET_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/build/linux_arm/gadgetosinit $(TARGET_DIR)/usr/bin/gadget-initc
+	$(INSTALL) -D -m 0755 $(GADGET_INITC_ARTIFACT_DIR) $(TARGET_DIR)/usr/bin/gadget-initc
 endef
-
-#define GADGET_INITC_INSTALL_INIT_SYSV
-#        $(INSTALL) -m 755 -D package/gadget-initc/S91_gadget_initc \
-#                $(TARGET_DIR)/etc/init.d/S91_gadget_initc
-#endef
 
 $(eval $(generic-package))
