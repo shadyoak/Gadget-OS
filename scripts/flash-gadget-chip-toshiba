@@ -1,0 +1,2 @@
+#!/bin/bash
+gadget/board/nextthing/chip/scripts/flash.sh output --bootloader Toshiba-MLC
