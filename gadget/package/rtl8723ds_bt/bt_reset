@@ -5,46 +5,43 @@
 # IO 4
 # 32 IO per Bank
 # 32 * 1 + 4 = 36
-BT_RST_N=36
+# BT_RST_PIN=36
 
+CONFIG_FILE="/etc/rtl8723ds_bt.cfg"
+[[ -f "${CONFIG_FILE}" ]] && source "${CONFIG_FILE}"
 
 failed () {
         status=$2
 
         echo ${1}
-        echo ${BT_RST_N} > /sys/class/gpio/unexport
+        echo ${BT_RST_PIN} > /sys/class/gpio/unexport
         exit ${status}
 }
 
-# Make sure this is a Crumb
-[ "$(cat /proc/device-tree/model)" = "NextThing Crumb" -o \
-  "$(cat /proc/device-tree/model)" = "NextThing C.H.I.P." ] || \
-        failed "This is not a Crumb ... exiting" $?
-
-# Make the BT_RST_N GPIO available to userspace
-if [ ! -e /sys/class/gpio/gpio${BT_RST_N} ]; then
-        echo ${BT_RST_N} > /sys/class/gpio/export || \
-                failed "Failed to export BT_RST_N" $?
+# Make the BT_RST_PIN GPIO available to userspace
+if [ ! -e /sys/class/gpio/gpio${BT_RST_PIN} ]; then
+        echo ${BT_RST_PIN} > /sys/class/gpio/export || \
+                failed "Failed to export BT_RST_PIN" $?
 fi
 
-# Set BT_RST_N to be an output
-echo out > /sys/class/gpio/gpio${BT_RST_N}/direction || \
-        failed "Failed to set BT_RST_N direction = out" $?
+# Set BT_RST_PIN to be an output
+echo out > /sys/class/gpio/gpio${BT_RST_PIN}/direction || \
+        failed "Failed to set BT_RST_PIN direction = out" $?
 
-# Toggle BT_RST_N to reset Bluetooth
+# Toggle BT_RST_PIN to reset Bluetooth
 {
-        echo 1 > /sys/class/gpio/gpio${BT_RST_N}/value;
+        echo 1 > /sys/class/gpio/gpio${BT_RST_PIN}/value;
         sleep 0.1;
-        echo 0 > /sys/class/gpio/gpio${BT_RST_N}/value;
+        echo 0 > /sys/class/gpio/gpio${BT_RST_PIN}/value;
         sleep 0.1;
-        echo 1 > /sys/class/gpio/gpio${BT_RST_N}/value;
+        echo 1 > /sys/class/gpio/gpio${BT_RST_PIN}/value;
 } || failed "Failed to toggle Bluetooth reset" $?
 
-# Cleanup BT_RST_N direction and unexport it
-echo in > /sys/class/gpio/gpio${BT_RST_N}/direction || \
-        failed "Failed to set BT_RST_N direction = in" $?
+# Cleanup BT_RST_PIN direction and unexport it
+echo in > /sys/class/gpio/gpio${BT_RST_PIN}/direction || \
+        failed "Failed to set BT_RST_PIN direction = in" $?
 
-echo ${BT_RST_N} > /sys/class/gpio/unexport || \
-        failed "Failed to unexport BT_RST_N" $?
+echo ${BT_RST_PIN} > /sys/class/gpio/unexport || \
+        failed "Failed to unexport BT_RST_PIN" $?
 
 echo "Bluetooth reset successfully!"

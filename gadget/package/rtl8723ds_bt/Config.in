@@ -8,3 +8,22 @@ config BR2_PACKAGE_RTL8723DS_BT
 
 	    * CONFIG_BT: bluetooth support
 		* CONFIG_BT_HCIUART: bluetooth HCI UART serial driver
+
+if BR2_PACKAGE_RTL8723DS_BT
+
+config BR2_PACKAGE_RTL8723DS_BT_RST_PIN
+prompt "Reset Pin"
+int
+default 36
+
+config BR2_PACKAGE_RTL8723DS_BT_TTY_DEV
+prompt "Terminal Device"
+string
+default /dev/ttyS1
+
+config BR2_PACAKGE_RTL8723DS_BT_CONFIG
+prompt "Firmware Configuration File"
+string
+default rtl8723d_fw
+
+endif
