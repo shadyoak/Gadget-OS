@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh
 
 # USB Gadget for CHIP Pro, forked from LEGO MINDSTORMS EV3 gadget script
 #
