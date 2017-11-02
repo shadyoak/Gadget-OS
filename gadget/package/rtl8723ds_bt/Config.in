@@ -19,7 +19,7 @@ default 36
 config BR2_PACKAGE_RTL8723DS_BT_TTY_DEV
 prompt "Terminal Device"
 string
-default /dev/ttyS1
+default /dev/ttyS2
 
 config BR2_PACAKGE_RTL8723DS_BT_CONFIG
 prompt "Firmware Configuration File"
