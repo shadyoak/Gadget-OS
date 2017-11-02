@@ -24,6 +24,6 @@ default /dev/ttyS2
 config BR2_PACAKGE_RTL8723DS_BT_CONFIG
 prompt "Firmware Configuration File"
 string
-default rtl8723d_fw
+default rtl8723d_config
 
 endif
