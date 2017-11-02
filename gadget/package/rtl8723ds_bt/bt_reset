@@ -38,8 +38,10 @@ echo out > /sys/class/gpio/gpio${BT_RST_PIN}/direction || \
 } || failed "Failed to toggle Bluetooth reset" $?
 
 # Cleanup BT_RST_PIN direction and unexport it
-echo in > /sys/class/gpio/gpio${BT_RST_PIN}/direction || \
-        failed "Failed to set BT_RST_PIN direction = in" $?
+
+## SKIP: leads to trouble on boards other than chip pro
+#echo in > /sys/class/gpio/gpio${BT_RST_PIN}/direction || \
+#        failed "Failed to set BT_RST_PIN direction = in" $?
 
 echo ${BT_RST_PIN} > /sys/class/gpio/unexport || \
         failed "Failed to unexport BT_RST_PIN" $?
