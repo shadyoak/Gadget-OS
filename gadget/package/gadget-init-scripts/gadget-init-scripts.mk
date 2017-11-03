@@ -33,7 +33,6 @@ define GADGET_INIT_SCRIPTS_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 644 $(@D)/etc/securetty $(TARGET_DIR)/etc/
 	$(INSTALL) -D -m 700 $(@D)/etc/init.d/rcS $(TARGET_DIR)/etc/init.d/
 	$(INSTALL) -D -m 700 $(@D)/etc/init.d/rcK $(TARGET_DIR)/etc/init.d/
-	$(INSTALL) -D -m 700 $(@D)/etc/init.d/S00_mounts $(TARGET_DIR)/etc/init.d/
 	$(INSTALL) -D -m 700 $(@D)/etc/init.d/S01_setup_ttys $(TARGET_DIR)/etc/init.d/
 	$(INSTALL) -D -m 700 $(@D)/etc/init.d/S10_modules $(TARGET_DIR)/etc/init.d/
 	$(INSTALL) -D -m 700 $(@D)/etc/init.d/S20_setup_audio_codec $(TARGET_DIR)/etc/init.d/

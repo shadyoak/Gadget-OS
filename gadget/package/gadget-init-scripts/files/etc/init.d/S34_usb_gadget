@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh
 
 # USB Gadget for CHIP Pro, forked from LEGO MINDSTORMS EV3 gadget script
 #
@@ -84,6 +84,7 @@ gadget_usb_up() {
 
     # Create a new gadget
 
+    mount -t configfs none /sys/kernel/config/
     mkdir ${g}
     echo "${usb_ver}" > ${g}/bcdUSB
     echo "${dev_class}" > ${g}/bDeviceClass
