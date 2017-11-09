@@ -22,14 +22,16 @@ udc_device="$(ls /sys/class/udc)"
 
 g="/sys/kernel/config/usb_gadget/g_chippro"
 
+# generate serial number
+CONFIG_FILE=/var/lib/usb-gadget.cfg
+[[ -f "${CONFIG_FILE}" ]] && source "${CONFIG_FILE}"
+[[ -z "${SERIAL}" ]] && SERIAL="06$(echo $RANDOM | md5sum | cut -c 1-14)" && echo "SERIAL=${SERIAL}" >"${CONFIG_FILE}"
 
 # add colons for MAC address format
-# Read soc serial - this is what CHIP uses for serial
-serial=$(/bin/cat /proc/device-tree/serial-number)
-dev_mac1=$(/bin/echo ${serial} | /bin/sed 's/../&:/g;s/:$//' | /usr/bin/cut -d: -f -2,5-)
-host_mac1=$(/bin/echo ${serial} | /bin/sed 's/../&:/g;s/:$//' | /usr/bin/cut -d: -f -3,6-)
-dev_mac2=$(/bin/echo ${serial} | /bin/sed 's/../&:/g;s/:$//' | /usr/bin/cut -d: -f -4,7-)
-host_mac2=$(/bin/echo ${serial} | /bin/sed 's/../&:/g;s/:$//' | /usr/bin/cut -d: -f -5,8-)
+dev_mac1=$(/bin/echo  ${SERIAL} | /bin/sed 's/../&:/g;s/:$//' | /usr/bin/cut -d: -f -2,5-)
+host_mac1=$(/bin/echo ${SERIAL} | /bin/sed 's/../&:/g;s/:$//' | /usr/bin/cut -d: -f -3,6-)
+dev_mac2=$(/bin/echo  ${SERIAL} | /bin/sed 's/../&:/g;s/:$//' | /usr/bin/cut -d: -f -4,7-)
+host_mac2=$(/bin/echo ${SERIAL} | /bin/sed 's/../&:/g;s/:$//' | /usr/bin/cut -d: -f -5,8-)
 
 # check bootargs for new IP setting
 bootarg_ip=$(cat /proc/cmdline | grep -o 'ip=[^ ]*')
@@ -94,7 +96,7 @@ gadget_usb_up() {
     mkdir ${g}/strings/0x409
     echo "${mfg}" > ${g}/strings/0x409/manufacturer
     echo "${prod}" > ${g}/strings/0x409/product
-    echo "${serial}" > ${g}/strings/0x409/serialnumber
+    echo "${SERIAL}" > ${g}/strings/0x409/serialnumber
 
     # Create 2 configurations. The first will be CDC. The second will be RNDIS.
     # Thanks to os_desc, Windows should use the second configuration.
