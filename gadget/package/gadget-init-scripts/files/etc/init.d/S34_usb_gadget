@@ -22,14 +22,16 @@ udc_device="$(ls /sys/class/udc)"
 
 g="/sys/kernel/config/usb_gadget/g_chippro"
 
+# Hardcode serial
+  serial=314159265359
 
-# add colons for MAC address format
-# Read soc serial - this is what CHIP uses for serial
-serial=$(/bin/cat /proc/device-tree/serial-number)
-dev_mac1=$(/bin/echo ${serial} | /bin/sed 's/../&:/g;s/:$//' | /usr/bin/cut -d: -f -2,5-)
-host_mac1=$(/bin/echo ${serial} | /bin/sed 's/../&:/g;s/:$//' | /usr/bin/cut -d: -f -3,6-)
-dev_mac2=$(/bin/echo ${serial} | /bin/sed 's/../&:/g;s/:$//' | /usr/bin/cut -d: -f -4,7-)
-host_mac2=$(/bin/echo ${serial} | /bin/sed 's/../&:/g;s/:$//' | /usr/bin/cut -d: -f -5,8-)
+# Hardcode mac addresses starting with 06: are local
+# -> not used in commercial product
+# -> c.f. https://en.wikipedia.org/wiki/MAC_address
+ dev_mac1=06:c0:de:af:fe:01
+host_mac1=06:c0:de:af:fe:02
+ dev_mac2=06:c0:de:af:fe:03
+host_mac2=06:c0:de:af:fe:04
 
 # check bootargs for new IP setting
 bootarg_ip=$(cat /proc/cmdline | grep -o 'ip=[^ ]*')
