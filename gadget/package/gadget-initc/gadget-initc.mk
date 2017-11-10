@@ -31,6 +31,8 @@ endef
 
 define GADGET_INITC_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(GADGET_INITC_ARTIFACT_DIR) $(TARGET_DIR)/usr/bin/gadget-initc
+	$(INSTALL) -D -m 0755 $(GADGET_INITC_PKGDIR)/S90_dockerd $(TARGET_DIR)/etc/init.d/
+	$(INSTALL) -D -m 0755 $(GADGET_INITC_PKGDIR)/S91_gadget_initc $(TARGET_DIR)/etc/init.d/
 endef
 
 $(eval $(generic-package))

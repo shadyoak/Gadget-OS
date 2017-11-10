@@ -1,11 +1,9 @@
 #!/bin/sh
-
-MODPROBE=/sbin/modprobe
 RETVAL=0
 
 start() {
-	/bin/stty -F /dev/ttyS1 115200
-	# /bin/stty -F /dev/ttyGS0 115200
+	/usr/sbin/alsactl restore
+	/usr/bin/amixer -c 0 cset numid=6 4
 }
 
 stop() {

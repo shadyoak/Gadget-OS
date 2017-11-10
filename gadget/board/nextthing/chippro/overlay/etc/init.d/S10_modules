@@ -3,16 +3,9 @@
 MODPROBE=/sbin/modprobe
 RETVAL=0
 
-start() {
-	echo -n "Probing modules: "
-	if [ ! -x "${MODPROBE}" -o ! -f "/etc/modules" ]; then
-		echo "missing"
-		exit 1
-	else
-		echo
-	fi
+load_from_file() {
 
-	grep '^[^#]' "/etc/modules" | \
+	grep '^[^#]' "${1}" | \
 	while read module args; do
 		[ "$module" ] || continue
 		if ${MODPROBE} $module $args; then
@@ -21,7 +14,28 @@ start() {
 			echo "  $module failed"
 		fi
 	done
+
 }
+
+start() {
+	
+	echo -n "Probing modules: "
+	if [ ! -x "${MODPROBE}" -o ! -f "/etc/modules" ]; then
+		echo "missing"
+		exit 1
+	else
+		echo
+	fi
+	
+	if [ -d /etc/modules-load.d ]; then
+		load_from_file /etc/modules
+		for file in /etc/modules-load.d/*
+		do
+			load_from_file $file
+		done
+	fi
+}
+
 
 stop() {
 	echo "Nothing to do"

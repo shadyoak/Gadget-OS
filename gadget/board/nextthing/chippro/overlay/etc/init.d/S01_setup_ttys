@@ -1,10 +1,9 @@
 #!/bin/sh
+
 RETVAL=0
 
 start() {
-	/sbin/modprobe sun4i-codec
-	/usr/sbin/alsactl restore
-	/usr/bin/amixer -c 0 cset numid=6 4
+	/bin/stty -F /dev/ttyS1 115200
 }
 
 stop() {
