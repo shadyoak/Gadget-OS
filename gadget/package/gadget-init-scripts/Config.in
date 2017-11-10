@@ -14,12 +14,4 @@ config BR2_PACKAGE_GADGET_INIT_SCRIPTS_USB_GADGET
 	help
 	  This option enables usb gadget serial and ethernet on boot
 
-if BR2_PACKAGE_DOCKER_ENGINE_DAEMON
-
-config BR2_PACKAGE_GADGET_INIT_SCRIPTS_DOCKERD
-	bool "Dockerd init"
-	help
-	  This option runs dockerd on boot
-
-endif
 endif

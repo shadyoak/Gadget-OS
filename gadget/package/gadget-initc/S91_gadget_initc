@@ -3,7 +3,21 @@ RETVAL=0
 
 start() {
         echo gadget-initc waiting for dockerd
-        while ! docker ps -a >/dev/null; do sleep 1; done
+        
+        ATTEMPTS=0
+        while [ ! docker ps -a >/dev/null ];
+        do
+			sleep 1
+			ATTEMPTS=$((ATTEMPTS + 1))
+			
+			if [ ${ATTEMPTS} -gt 4 ]; then
+				RETVAL=1
+				echo "gadget-initc: dockerd never came up"
+				exit $RETVAL
+			fi
+			
+		done
+        
         sleep 1
         echo gadget-initc: dockerd is up
         /usr/bin/gadget-initc init &
@@ -12,6 +26,7 @@ start() {
 stop() {
         echo "Nothing to do"
 }
+
 case "$1" in
         start)
                 start
