@@ -27,33 +27,26 @@ BOARD_DIR=${ROOT_DIR}/board/nextthing/chippro
 ## create U-BOOT SCRIPT
 mkimage -A arm -T script -C none -n "Flash" -d "${BOARD_DIR}/uboot.script.source" "${1}/uboot.script"
 
-
 ## create NAND images
-NAND_CONFIG="${NAND_CONFIG}.config"
-
 pushd $BINARIES_DIR
 
-source "${HOST_DIR}/usr/bin/chip_nand_scripts_common" 
-read_nand_config "${NAND_CONFIG}"
-
 echo "## creating SPL image"
-"${HOST_DIR}/usr/bin/mk_spl_image" -N "${NAND_CONFIG}" sunxi-spl.bin
+"${HOST_DIR}/usr/bin/mk_chip_image" "${NAND_CONFIG}" spl sunxi-spl.bin spl-${NAND_CONFIG}.bin
 
 echo "## creating uboot image"
-"${HOST_DIR}/usr/bin/mk_uboot_image" -N "${NAND_CONFIG}" u-boot-dtb.bin
+"${HOST_DIR}/usr/bin/mk_chip_image" "${NAND_CONFIG}" u-boot u-boot-dtb.bin u-boot-${NAND_CONFIG}.bin
 
 echo "## creating ubifs image"
-"${HOST_DIR}/usr/bin/mk_ubifs_image" -N "${NAND_CONFIG}" -o rootfs.ubifs rootfs_ro.tar
+"${HOST_DIR}/usr/bin/mk_chip_image" "${NAND_CONFIG}" ubifs rootfs_ro.tar rootfs.ubifs 
 
 echo "## creating ubifs image"
-"${HOST_DIR}/usr/bin/mk_ubifs_image" -N "${NAND_CONFIG}" -o data.ubifs data.tar
+"${HOST_DIR}/usr/bin/mk_chip_image" "${NAND_CONFIG}" ubifs data.tar data.ubifs 
 
 echo "## creating ubi image"
-"${HOST_DIR}/usr/bin/mk_ubi_image" -N "${NAND_CONFIG}" -c "${BOARD_DIR}/configs/ubinize.config" rootfs.ubifs
+"${HOST_DIR}/usr/bin/mk_chip_image" -c "${BOARD_DIR}/configs/ubinize.config" "${NAND_CONFIG}" ubi rootfs.ubifs ubi-${NAND_CONFIG}.bin
 
-ln -sf "spl-$NAND_EBSIZE-$NAND_PSIZE-${NAND_OSIZE}.bin" "$BINARIES_DIR/flash-spl.bin"
-ln -sf "uboot-${NAND_EBSIZE}.bin" "$BINARIES_DIR/flash-uboot.bin"
-ln -sf "chip-$NAND_EBSIZE-${NAND_PSIZE}.ubi.sparse" "$BINARIES_DIR/flash-rootfs.bin"
+ln -sf "spl-${NAND_CONFIG}.bin" "$BINARIES_DIR/flash-spl.bin"
+ln -sf "u-boot-${NAND_CONFIG}.bin" "$BINARIES_DIR/flash-uboot.bin"
+ln -sf "ubi-${NAND_CONFIG}.bin.sparse" "$BINARIES_DIR/flash-rootfs.bin"
 
 popd
-

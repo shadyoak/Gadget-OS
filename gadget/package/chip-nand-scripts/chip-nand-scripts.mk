@@ -13,12 +13,8 @@ CHIP_NAND_SCRIPTS_DEPENDENCIES = mtd uboot-tools android-tools
 define HOST_CHIP_NAND_SCRIPTS_INSTALL_CMDS
 	$(INSTALL) -D -m 0755 $(HOST_CHIP_NAND_SCRIPTS_DIR)/mk_buildroot_images $(HOST_DIR)/usr/bin/mk_buildroot_images
 	$(INSTALL) -D -m 0755 $(HOST_CHIP_NAND_SCRIPTS_DIR)/mk_gadget_images $(HOST_DIR)/usr/bin/mk_gadget_images
-	$(INSTALL) -D -m 0755 $(HOST_CHIP_NAND_SCRIPTS_DIR)/mk_spl_image $(HOST_DIR)/usr/bin/mk_spl_image
-	$(INSTALL) -D -m 0755 $(HOST_CHIP_NAND_SCRIPTS_DIR)/mk_ubi_image $(HOST_DIR)/usr/bin/mk_ubi_image
-	$(INSTALL) -D -m 0755 $(HOST_CHIP_NAND_SCRIPTS_DIR)/mk_ubifs_image $(HOST_DIR)/usr/bin/mk_ubifs_image
-	$(INSTALL) -D -m 0755 $(HOST_CHIP_NAND_SCRIPTS_DIR)/mk_uboot_env_image $(HOST_DIR)/usr/bin/mk_uboot_env_image
-	$(INSTALL) -D -m 0755 $(HOST_CHIP_NAND_SCRIPTS_DIR)/mk_uboot_image $(HOST_DIR)/usr/bin/mk_uboot_image
 	$(INSTALL) -D -m 0755 $(HOST_CHIP_NAND_SCRIPTS_DIR)/mk_uboot_script $(HOST_DIR)/usr/bin/mk_uboot_script
+	$(INSTALL) -D -m 0755 $(HOST_CHIP_NAND_SCRIPTS_DIR)/mk_chip_image $(HOST_DIR)/usr/bin/mk_chip_image
 	$(INSTALL) -D -m 0755 $(HOST_CHIP_NAND_SCRIPTS_DIR)/chip_nand_scripts_common $(HOST_DIR)/usr/bin/chip_nand_scripts_common
 	$(INSTALL) -D -m 0755 $(HOST_CHIP_NAND_SCRIPTS_DIR)/flash.sh $(HOST_DIR)/usr/bin/flash.sh
 	$(INSTALL) -D -m 0755 $(HOST_CHIP_NAND_SCRIPTS_DIR)/gotofastboot.sh $(HOST_DIR)/usr/bin/gotofastboot.sh
