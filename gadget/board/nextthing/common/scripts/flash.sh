@@ -2,7 +2,6 @@
 FLASH_SPL=false
 FLASH_UBOOT=false
 BR_OUTPUT_DIR="${1}"
-BOARD_DIR="${BOARD_DIR:-${BR_OUTPUT_DIR}/../gadget/board/nextthing/chippro}"
 
 if [ "${2}" == "--continue" ]; then
 	fastboot -i 0x1f3a continue
