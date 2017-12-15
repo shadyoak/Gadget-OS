@@ -23,8 +23,7 @@
 # now run any rc scripts
 ::sysinit:/etc/init.d/rcS
 
-
-console::respawn:/bin/sh
+/dev/ttyS0::respawn:/bin/sh
 
 # Stuff to do for the 3-finger salute
 ::ctrlaltdel:/sbin/reboot
