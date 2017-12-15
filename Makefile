@@ -77,6 +77,9 @@ nconfig:
 SHELL:
 	@$(DOCKER) /bin/bash
 
+CLEAN_TARGET:
+	@$(DOCKER) find /opt/output/build -name ".stamp_target_installed" -exec rm \{\} \; && rm -rf /opt/output/build/target/*
+
 help:
 	@$(foreach b, $(sort $(notdir $(wildcard $(BR2_EXTERNAL_GADGETOS_PATH)/configs/*_defconfig))), \
 	  printf "  %-29s - Build for %s\\n" $(b) $(b:_defconfig=);)
