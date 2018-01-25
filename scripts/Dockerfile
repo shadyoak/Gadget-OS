@@ -19,7 +19,8 @@ RUN apt update && \
 	ncurses-dev \
 	python \
 	android-tools-fsutils \
-	lzop && \
+	lzop \
+	cvs && \
 	rm -rf /var/lib/apt-lists/* && \
 	locale-gen en_US.UTF-8 && \
 	echo 'LANG="en_US.UTF-8"' > /etc/default/locale && \
