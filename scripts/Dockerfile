@@ -19,7 +19,8 @@ RUN apt update && \
 	ncurses-dev \
 	python \
 	android-tools-fsutils \
-	lzop && \
+	lzop \
+	cvs && \
 	rm -rf /var/lib/apt-lists/* && \
 	locale-gen en_US.UTF-8 && \
 	echo 'LANG="en_US.UTF-8"' > /etc/default/locale && \
@@ -29,5 +30,5 @@ RUN apt update && \
 	mkdir -p /opt/buildroot && \
 	mkdir -p /opt/output && \
 	mkdir -p /opt/dlcache && \
-	wget -P /opt "https://github.com/buildroot/buildroot/archive/2017.08.tar.gz" && \
-	tar -C /opt/buildroot -xzf /opt/2017.08.tar.gz --strip-components=1
+	wget -P /opt "https://github.com/buildroot/buildroot/archive/2017.11.1.tar.gz" && \
+	tar -C /opt/buildroot -xzf /opt/2017.11.1.tar.gz --strip-components=1

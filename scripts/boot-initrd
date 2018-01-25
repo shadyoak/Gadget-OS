@@ -1,0 +1,43 @@
+#!/bin/bash
+
+FEL=fel
+
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+OUTPUT_IMAGES="${SCRIPT_DIR}/../output/images"
+
+   SPL="${1:-$OUTPUT_IMAGES/sunxi-spl.bin}"
+ UBOOT="${2:-$OUTPUT_IMAGES/u-boot-dtb.bin}"
+KERNEL="${3:-$OUTPUT_IMAGES/zImage}"
+   DTB="${4:-$OUTPUT_IMAGES/sun5i-r8-chip.dtb}"
+INITRD="${5:-$OUTPUT_IMAGES/rootfs.cpio.uboot}"
+SCRIPT="${6:-$OUTPUT_IMAGES/uboot.script}"
+
+echo    SPL="$SPL"
+echo  UBOOT="$UBOOT"
+echo KERNEL="$KERNEL"
+echo    DTB="$DTB"
+echo INITRD="$INITRD"
+echo SCRIPT="$SCRIPT"
+
+echo == upload the SPL to SRAM and execute it ==
+${FEL} spl $SPL
+
+sleep 1 # wait for DRAM initialization to complete
+
+echo == upload the main u-boot binary to DRAM ==
+${FEL} write 0x4a000000 $UBOOT
+
+echo == upload the kernel ==
+${FEL} write 0x42000000 $KERNEL
+
+echo == upload the DTB file ==
+${FEL} write 0x43000000 $DTB
+
+echo == upload the boot.scr file ==
+${FEL} write 0x43100000 $SCRIPT
+
+echo == upload the initramfs file ==
+${FEL} write 0x43300000 $INITRD
+
+echo == execute the main u-boot binary ==
+${FEL} exe   0x4a000000
