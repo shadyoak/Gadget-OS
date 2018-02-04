@@ -8,6 +8,18 @@ if [ -z $(id -u $USER) ] || [ -z $(id -g $USER) ]; then
 
 else
 
+
+## Fixes issue where newer versions of Docker for Mac cannot mount `/etc/passwd` or `/etc/group`.
+## https://github.com/docker/for-mac/issues/2458
+
+GROUP_FILE="/etc/group"
+PASSWD_FILE="/etc/passwd"
+
+if [ "$(uname -s)" == "Darwin" ] ; then
+	GROUP_FILE="/private/etc/group"
+	PASSWD_FILE="/private/etc/passwd"
+fi
+
 docker run \
 	--rm \
 	--env BR2_DL_DIR=/opt/dlcache/ \
@@ -20,8 +32,8 @@ docker run \
 	--volume=${GADGET_DIR}/local:/local \
 	--volume=${TMP_VOL}:/tmp \
 	--name=gadget-build-task \
-	--volume=/etc/group:/etc/group:ro \
-	--volume=/etc/passwd:/etc/passwd:ro \
+	--volume="${GROUP_FILE}":/etc/group:ro \
+	--volume="${PASSWD_FILE}":/etc/passwd:ro \
 	-w="/opt/gadget-os-proto" \
 	${SSH_FORWARDING} \
 	${LOCAL_ENV} \
