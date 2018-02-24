@@ -23,9 +23,16 @@ echo "# TARGET_RO_DIR=${TARGET_RO_DIR}"
 rm -rf "${TARGET_RO_DIR}"
 cp -al "${TARGET_DIR}" "${TARGET_RO_DIR}"
 mkdir -p "${TARGET_RO_DIR}/data"
+mkdir -p "${TARGET_RO_DIR}/root/.docker"
 
 mkdir -p "${DATA_ETC}/docker"
 mkdir -p "${DATA_ROOT}"
+
+cat > "${DATA_ETC}/docker/daemon.json" <<EOF
+{
+    "userland-proxy": false
+}
+EOF
 
 pushd "${TARGET_RO_DIR}/etc"
 mv ssh "${DATA_ETC}/ssh"
@@ -57,6 +64,12 @@ mkdir -p "${DATA_VAR}/empty"
 pushd "${TMP_DATA}/"
 ln -sf ../tmp tmp
 ln -sf ../run run
+popd
+
+ls -lsah "${TARGET_RO_DIR}/root/.docker"
+mv ${TARGET_RO_DIR}/root/.docker ${DATA_ROOT}/
+pushd ${TARGET_RO_DIR}/root
+ln -sf ../data/root/.docker .docker
 popd
 
 ls -lsah "${TARGET_RO_DIR}/root/.ssh"
